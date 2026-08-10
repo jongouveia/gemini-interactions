@@ -8,7 +8,7 @@ One small CLI for Google's **Gemini Interactions API** — the unified API (GA J
 
 | Command | What it does | Model(s) |
 |---------|--------------|----------|
-| `gemini image` | Image generation + editing (Nano Banana 2 / Pro) — aspect ratio, resolution, reference images | `gemini-3.1-flash-image`, `gemini-3-pro-image` |
+| `gemini image` | Image generation + editing (Nano Banana 2 Lite / 2 / Pro) — aspect ratio, resolution, reference images | `gemini-3.1-flash-lite-image`, `gemini-3.1-flash-image`, `gemini-3-pro-image` |
 | `gemini music` | Music generation (Lyria 3) — clips + full songs, with lyrics | `lyria-3-pro-preview`, `lyria-3-clip-preview` |
 | `gemini tts` | Text-to-speech, single- or multi-speaker (voiceovers, podcasts) → WAV | `gemini-3.1-flash-tts-preview` |
 | `gemini research` | Grounded research — Google **Maps**/Search grounding + the **Deep Research** agent (cited reports + native charts) | `gemini-3.5-flash`, `deep-research-*` |
@@ -29,6 +29,9 @@ Image/music need a **billing-enabled** key. Deep Research and grounding may requ
 ```bash
 # Image (Nano Banana 2)
 uv run gemini.py image --prompt "a minimal green leaf icon on white" --aspect-ratio 1:1 --image-size 512 --out leaf.png
+
+# Same, on the fastest/cheapest tier — `--model` takes an alias (lite | nb2 | pro) or a full model ID
+uv run gemini.py image --model lite --prompt "a minimal green leaf icon on white" --image-size 512 --out leaf.png
 
 # Voiceover (TTS) — drops straight into a video pipeline as a 24 kHz WAV
 uv run gemini.py tts --text "Say warmly: Welcome to the show." --voice Kore --out vo.wav

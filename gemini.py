@@ -30,6 +30,18 @@ import argparse, base64, json, os, subprocess, sys, time
 AUDIO_EXT = {"audio/mpeg": "mp3", "audio/mp3": "mp3", "audio/wav": "wav",
              "audio/x-wav": "wav", "audio/wave": "wav"}
 
+# Short aliases for the Nano Banana image models. Full IDs still pass through untouched.
+IMAGE_MODEL_ALIASES = {
+    "lite": "gemini-3.1-flash-lite-image",   # Nano Banana 2 Lite — ~4s, cheapest
+    "nb2-lite": "gemini-3.1-flash-lite-image",
+    "nb2": "gemini-3.1-flash-image",         # Nano Banana 2 — balanced
+    "flash": "gemini-3.1-flash-image",
+    "pro": "gemini-3-pro-image",             # Nano Banana Pro — in-image text
+    "nb-pro": "gemini-3-pro-image",
+}
+# Verified against the live API 2026-08-10: both Flash tiers accept 512px; Pro does not.
+IMAGE_MODELS_WITH_512 = {"gemini-3.1-flash-image", "gemini-3.1-flash-lite-image"}
+
 
 # --------------------------------------------------------------------------- shared
 
@@ -75,11 +87,12 @@ def _build_image_input(prompt: str, image_paths: list):
 
 def cmd_image(args):
     VALID_SIZES = {"512", "1K", "2K", "4K"}
+    model = IMAGE_MODEL_ALIASES.get(args.model.lower(), args.model)
     size = args.image_size.replace("k", "K")
     if size not in VALID_SIZES:
         sys.exit(f"ERROR: --image-size must be one of {sorted(VALID_SIZES)} (got {args.image_size})")
-    if size == "512" and args.model != "gemini-3.1-flash-image":
-        sys.exit("ERROR: 512px is only available on gemini-3.1-flash-image (Nano Banana 2).")
+    if size == "512" and model not in IMAGE_MODELS_WITH_512:
+        sys.exit(f"ERROR: 512px is only available on {sorted(IMAGE_MODELS_WITH_512)} (got {model}).")
 
     client = get_client(args)
     payload = _build_image_input(args.prompt, args.input_image)
@@ -91,7 +104,7 @@ def cmd_image(args):
 
     saved = []
     for i in range(max(1, args.count)):
-        kwargs = dict(model=args.model, input=payload, response_format=response_format)
+        kwargs = dict(model=model, input=payload, response_format=response_format)
         if args.thinking:
             kwargs["generation_config"] = {"thinking_level": args.thinking}
         try:
@@ -112,17 +125,21 @@ def cmd_image(args):
             f.write(img_bytes)
         saved.append(os.path.abspath(out_path))
 
-    print(json.dumps({"images": saved, "model": args.model, "aspect_ratio": args.aspect_ratio,
+    print(json.dumps({"images": saved, "model": model, "aspect_ratio": args.aspect_ratio,
                       "image_size": size, "count": len(saved), "prompt": args.prompt}, indent=2))
 
 
 def add_image(sub, common):
-    p = sub.add_parser("image", parents=[common], help="image generation/editing (Nano Banana 2/Pro)")
+    p = sub.add_parser("image", parents=[common],
+                       help="image generation/editing (Nano Banana 2 Lite/2/Pro)")
     p.add_argument("--prompt", required=True)
     p.add_argument("--aspect-ratio", default="16:9")
     p.add_argument("--image-size", default="1K", help="512 | 1K | 2K | 4K (uppercase K)")
     p.add_argument("--model", default="gemini-3.1-flash-image",
-                   help="gemini-3.1-flash-image (NB2) | gemini-3-pro-image (NB Pro)")
+                   help="alias lite | nb2 | pro, or a full model ID. "
+                        "lite=gemini-3.1-flash-lite-image (fastest, cheapest), "
+                        "nb2=gemini-3.1-flash-image (default), "
+                        "pro=gemini-3-pro-image (in-image text)")
     p.add_argument("--thinking", default=None, choices=["low", "medium", "high"],
                    help="thinking_level (NB Pro only; high = best text rendering)")
     p.add_argument("--input-image", action="append", default=[],

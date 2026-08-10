@@ -1,6 +1,6 @@
 ---
 name: gemini-interactions
-description: "Generate images (Nano Banana 2/Pro), music (Lyria 3), speech/voiceovers (TTS), and grounded/Deep-Research reports (Maps + Search) via Google's Gemini Interactions API. Use when a task needs Gemini image/music/audio generation or Google-grounded research. Triggers: generate image, nano banana, lyria music, text to speech, voiceover, deep research, maps grounded, gemini interactions."
+description: "Generate images (Nano Banana 2 Lite/2/Pro), music (Lyria 3), speech/voiceovers (TTS), and grounded/Deep-Research reports (Maps + Search) via Google's Gemini Interactions API. Use when a task needs Gemini image/music/audio generation or Google-grounded research. Triggers: generate image, nano banana, lyria music, text to speech, voiceover, deep research, maps grounded, gemini interactions."
 license: MIT
 metadata:
   engine: "Gemini Interactions API (google-genai)"
@@ -19,4 +19,4 @@ One self-contained `uv`-run CLI for the Gemini Interactions API. Key from `GEMIN
 | Quick grounded research | `uv run gemini.py research --query "…" --lat L --lng L` |
 | Deep cited report + chart | `uv run gemini.py research --deep --query "…" --out report.md` |
 
-Each subcommand prints usage with `--help` (`uv run gemini.py <cmd> --help`). Models: image `gemini-3.1-flash-image` / `gemini-3-pro-image`; music `lyria-3-{clip,pro}-preview`; TTS `gemini-3.1-flash-tts-preview`; research `gemini-3.5-flash` + `deep-research-*` agents. Image/music need a billing-enabled key.
+Each subcommand prints usage with `--help` (`uv run gemini.py <cmd> --help`). Models: image `gemini-3.1-flash-lite-image` / `gemini-3.1-flash-image` / `gemini-3-pro-image` (aliases `lite` / `nb2` / `pro`); music `lyria-3-{clip,pro}-preview`; TTS `gemini-3.1-flash-tts-preview`; research `gemini-3.5-flash` + `deep-research-*` agents. Image/music need a billing-enabled key.
