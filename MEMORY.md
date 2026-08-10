@@ -30,12 +30,12 @@ Open-source, MIT-licensed CLI wrapping Google's Gemini Interactions API (GA June
 - Deep Research: `background=True`, poll `interactions.get(id)` until `status=="completed"`; response `steps[]` order is not guaranteed to put report text first (a chart/image block can be `steps[-1]`) — must scan blocks, not assume position.
 - All image outputs carry Google's SynthID watermark.
 - This repo is the canonical, decoupled home for Gemini Interactions logic; PixelCove-internal consumers (`/seo-image-gen`, `/seo-local-research` skills, `ai-music-label-lab`) each have their own copies/adaptations rather than importing this directly — keep behavior changes in sync manually if fixing bugs found here.
-- Published under the PixelCove GitHub org per house rule (never personal `jg-cc`).
+- **Ownership (corrected 2026-08-10): this repo lives at `jongouveia/gemini-interactions` (personal), NOT the PixelCove org.** It was published under PixelCove in June 2026 and later transferred; `github.com/PixelCove/gemini-interactions` now only 302-redirects to the personal path (`gh api repos/PixelCove/gemini-interactions` returns `full_name: jongouveia/gemini-interactions`). Generic MIT tooling, so personal ownership is fine per [[feedback_github_org]] — but do not cite the PixelCove path as canonical.
 
 ## Current focus / open threads
 _unknown_ — no open TODOs surfaced in README/SKILL.md; last known state is "shipped" (single-CLI fold, commit `a886d17`).
 
 ## Links
 - Obsidian: none
-- Repo remote: https://github.com/PixelCove/gemini-interactions.git
+- Repo remote: https://github.com/jongouveia/gemini-interactions.git (the PixelCove org URL is a stale redirect)
 - Related memory: [[reference_gemini_interactions_api]]
