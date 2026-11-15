@@ -418,7 +418,7 @@ def add_research(sub, common):
     p.add_argument("--query", required=True, help="research question (include the locale)")
     p.add_argument("--lat", type=float, default=None, help="latitude for 'near me' grounding")
     p.add_argument("--lng", type=float, default=None, help="longitude for 'near me' grounding")
-    p.add_argument("--model", default="gemini-3.5-flash")
+    p.add_argument("--model", default="gemini-3.6-flash")
     p.add_argument("--mode", choices=["maps", "search", "both"], default="maps",
                    help="grounding source: maps (default), search, or both (two passes merged)")
     p.add_argument("--deep", action="store_true", help="use the Deep Research agent (background, slow)")

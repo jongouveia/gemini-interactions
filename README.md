@@ -11,7 +11,7 @@ One small CLI for Google's **Gemini Interactions API** — the unified API (GA J
 | `gemini image` | Image generation + editing (Nano Banana 2 Lite / 2 / Pro) — aspect ratio, resolution, reference images | `gemini-3.1-flash-lite-image`, `gemini-3.1-flash-image`, `gemini-3-pro-image` |
 | `gemini music` | Music generation (Lyria 3) — clips + full songs, with lyrics | `lyria-3-pro-preview`, `lyria-3-clip-preview` |
 | `gemini tts` | Text-to-speech, single- or multi-speaker (voiceovers, podcasts) → WAV | `gemini-3.1-flash-tts-preview` |
-| `gemini research` | Grounded research — Google **Maps**/Search grounding + the **Deep Research** agent (cited reports + native charts) | `gemini-3.5-flash`, `deep-research-*` |
+| `gemini research` | Grounded research — Google **Maps**/Search grounding + the **Deep Research** agent (cited reports + native charts) | `gemini-3.6-flash`, `deep-research-*` |
 
 Run any subcommand with `--help` for its flags.
 
