@@ -9,7 +9,7 @@
 Jon retired `gemini.py` on 2026-11-26. Google's official `gemini-api` CLI replaces it (routing and rules in `~/.claude/TOOLS.md`, Gemini section). The public repo stays as is; do not route new work here.
 
 ## What this is
-Open-source, MIT-licensed CLI wrapping Google's Gemini Interactions API (GA June 2026) — one self-contained `uv`-run script (`gemini.py`) with subcommands for image gen (Nano Banana 2/Pro), music (Lyria 3), TTS, and grounded/Deep Research (Maps + Search). Built and published by PixelCove 2026-06-22/23; public repo, not client-specific. Status: shipped/live, folded into single CLI at commit `a886d17`.
+Open-source, MIT-licensed CLI wrapping Google's Gemini Interactions API (GA June 2026) — one self-contained `uv`-run script (`gemini.py`) with subcommands for image gen (Nano Banana 2/Pro), music (Lyria 3), TTS, and grounded/Deep Research (Maps + Search). Built and published by Pixelcove 2026-06-22/23; public repo, not client-specific. Status: shipped/live, folded into single CLI at commit `a886d17`.
 
 ## Stack & key commands
 - Python, single-file script (`gemini.py`), PEP 723 inline deps (`google-genai`), run via `uv run --script` — no install step.
@@ -25,14 +25,14 @@ Open-source, MIT-licensed CLI wrapping Google's Gemini Interactions API (GA June
 - `LICENSE` — MIT.
 
 ## Durable decisions & gotchas
-- Key resolution order: `GEMINI_API_KEY` / `GOOGLE_API_KEY` / `GOOGLE_GENAI_API_KEY` env → optional `op read $GEMINI_OP_REF` (+ `$GEMINI_OP_REF_FALLBACK`) if `op` present. Genericized — no PixelCove-specific op refs baked in (this is the public repo).
+- Key resolution order: `GEMINI_API_KEY` / `GOOGLE_API_KEY` / `GOOGLE_GENAI_API_KEY` env → optional `op read $GEMINI_OP_REF` (+ `$GEMINI_OP_REF_FALLBACK`) if `op` present. Genericized — no Pixelcove-specific op refs baked in (this is the public repo).
 - Image/music require a **billing-enabled** Gemini API key; Deep Research/grounding may need those features enabled on the key's Cloud project.
 - Model IDs: image = `gemini-3.1-flash-lite-image` (NB2 Lite, ~4s, $0.034/1K image) / `gemini-3.1-flash-image` (NB2, default) / `gemini-3-pro-image` (NB Pro, high-fidelity text-in-image). `--model` accepts the aliases `lite` / `nb2` / `pro` or a full ID (`IMAGE_MODEL_ALIASES`). **Verified live 2026-08-10: BOTH Flash tiers accept 512px — the old "512 is NB2 only" guard was wrong and is fixed** (`IMAGE_MODELS_WITH_512`). Music = `lyria-3-pro-preview` / `lyria-3-clip-preview`; TTS = `gemini-3.1-flash-tts-preview`; research = `gemini-3.6-flash` (`gemini-3.5-flash` routes there since 2026-11; `gemini-4-hydrogen` grounds Maps more strictly at ~5x the cost) + `deep-research-*` agents.
 - `research --mode both` runs Maps and Search grounding as **two separate passes and merges sources** — Google's API cannot combine `google_maps` + `google_search` in one request (400 `invalid_request`).
 - TTS output is raw 24kHz 16-bit mono PCM base64 — the CLI wraps it in a WAV header itself.
 - Deep Research: `background=True`, poll `interactions.get(id)` until `status=="completed"`; response `steps[]` order is not guaranteed to put report text first (a chart/image block can be `steps[-1]`) — must scan blocks, not assume position.
 - All image outputs carry Google's SynthID watermark.
-- This repo is the canonical, decoupled home for Gemini Interactions logic; PixelCove-internal consumers (`/seo-image-gen`, `/seo-local-research` skills, `ai-music-label-lab`) each have their own copies/adaptations rather than importing this directly — keep behavior changes in sync manually if fixing bugs found here.
+- This repo is the canonical, decoupled home for Gemini Interactions logic; Pixelcove-internal consumers (`/seo-image-gen`, `/seo-local-research` skills, `ai-music-label-lab`) each have their own copies/adaptations rather than importing this directly — keep behavior changes in sync manually if fixing bugs found here.
 - **Ownership (corrected 2026-08-10): this repo lives at `jongouveia/gemini-interactions` (personal), NOT the PixelCove org.** It was published under PixelCove in June 2026 and later transferred; `github.com/PixelCove/gemini-interactions` now only 302-redirects to the personal path (`gh api repos/PixelCove/gemini-interactions` returns `full_name: jongouveia/gemini-interactions`). Generic MIT tooling, so personal ownership is fine per [[feedback_github_org]] — but do not cite the PixelCove path as canonical.
 
 ## Current focus / open threads
