@@ -5,6 +5,9 @@
 > Related global memory: [[reference_gemini_interactions_api]].
 > Update this after significant work.
 
+## Status: RETIRED (2026-11-26)
+Jon retired `gemini.py` on 2026-11-26. Google's official `gemini-api` CLI replaces it (routing and rules in `~/.claude/TOOLS.md`, Gemini section). The public repo stays as is; do not route new work here.
+
 ## What this is
 Open-source, MIT-licensed CLI wrapping Google's Gemini Interactions API (GA June 2026) — one self-contained `uv`-run script (`gemini.py`) with subcommands for image gen (Nano Banana 2/Pro), music (Lyria 3), TTS, and grounded/Deep Research (Maps + Search). Built and published by PixelCove 2026-06-22/23; public repo, not client-specific. Status: shipped/live, folded into single CLI at commit `a886d17`.
 
